@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, Link } from "react-router-dom";
+import "./App.css"; // Importando os estilos
 
 export default function Cadastrar() {
   const [nome, setUsername] = useState("");
@@ -16,7 +16,6 @@ export default function Cadastrar() {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -30,8 +29,8 @@ export default function Cadastrar() {
           numero,
           bairro,
           cidade,
-          cep
-        }
+          cep,
+        },
       });
 
       setMsg(res.data.msg);
@@ -42,18 +41,22 @@ export default function Cadastrar() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input value={nome} onChange={e => setUsername(e.target.value)} placeholder="Usuário" />
-      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-      <input value={matricula} onChange={e => setMatricula(e.target.value)} placeholder="Matrícula" />
-      <input value={senha} onChange={e => setPassword(e.target.value)} placeholder="Senha" type="password" />
-      <input value={rua} onChange={e => setRua(e.target.value)} placeholder="Rua" />
-      <input value={numero} onChange={e => setNumero(e.target.value)} placeholder="Número" />
-      <input value={bairro} onChange={e => setBairro(e.target.value)} placeholder="Bairro" />
-      <input value={cidade} onChange={e => setCidade(e.target.value)} placeholder="Cidade" />
-      <input value={cep} onChange={e => setCep(e.target.value)} placeholder="CEP" />
-      <button type="submit">Cadastrar</button>
-      <p>{msg}</p>
-    </form>
+    <div className="login-container">
+      <h1>Cadastro</h1>
+      <form onSubmit={handleSubmit}>
+        <input value={nome} onChange={(e) => setUsername(e.target.value)} placeholder="Usuário" />
+        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+        <input value={matricula} onChange={(e) => setMatricula(e.target.value)} placeholder="Matrícula" />
+        <input value={senha} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" type="password" />
+        <input value={rua} onChange={(e) => setRua(e.target.value)} placeholder="Rua" />
+        <input value={numero} onChange={(e) => setNumero(e.target.value)} placeholder="Número" />
+        <input value={bairro} onChange={(e) => setBairro(e.target.value)} placeholder="Bairro" />
+        <input value={cidade} onChange={(e) => setCidade(e.target.value)} placeholder="Cidade" />
+        <input value={cep} onChange={(e) => setCep(e.target.value)} placeholder="CEP" />
+        <button type="submit">Cadastrar</button>
+      </form>
+      {msg && <p>{msg}</p>}
+      <Link to="/">Já tem conta? Voltar para login</Link>
+    </div>
   );
 }
