@@ -3,14 +3,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export default function Login({ onLogin }) {
-  const [nome, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [senha, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/login", {
-        nome,
+        email,
         senha,
       });
       const token = res.data.access_token;
@@ -28,9 +28,9 @@ export default function Login({ onLogin }) {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={nome}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Usuário"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           required
         />
         <input
