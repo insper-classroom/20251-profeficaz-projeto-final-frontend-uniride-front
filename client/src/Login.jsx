@@ -22,11 +22,26 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input value={nome} onChange={e => setUsername(e.target.value)} placeholder="Usuário" />
-      <input value={senha} type="senha" onChange={e => setPassword(e.target.value)} placeholder="Senha" />
-      <Link to="/cadastro">Criar uma conta</Link>
-      <button type="submit">Entrar</button>
-    </form>
+    <div className="login-container">
+      <h1>Bem-vindo ao Uniride</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={nome}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Usuário"
+          required
+        />
+        <input
+          type="password"
+          value={senha}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Senha"
+          required
+        />
+        <button type="submit">Entrar</button>
+      </form>
+      <Link to="/cadastro">Não tem conta? Cadastre-se</Link>
+    </div>
   );
 }

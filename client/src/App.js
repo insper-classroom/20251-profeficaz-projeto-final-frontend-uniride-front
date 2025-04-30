@@ -1,18 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Login";
-import Register from "./Register";
-import { useState } from "react";
+// src/App.js
+import React from "react";
+import "./App.css";
 
 function App() {
-  const [token, setToken] = useState(localStorage.getItem("token"));
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login onLogin={setToken} />} />
-        <Route path="/cadastro" element={<Register />} />
-      </Routes>
-    </Router>
+    <main className="login-container">
+      <h1>Bem-vindo ao Uniride</h1>
+      <form id="loginForm">
+        <input type="text" placeholder="Usuário" id="username" required />
+        <input type="password" placeholder="Senha" id="password" required />
+        <button type="submit">Entrar</button>
+      </form>
+      <p>
+        Não tem conta? <a href="#">Cadastre-se</a>
+      </p>
+    </main>
   );
 }
 
