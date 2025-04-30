@@ -24,6 +24,7 @@ export default function Login({ onLogin }) {
   return (
     <div className="login-container">
       <h1>Bem-vindo ao Uniride</h1>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -41,7 +42,10 @@ export default function Login({ onLogin }) {
         />
         <button type="submit">Entrar</button>
       </form>
-      <Link to="/cadastro">Não tem conta? Cadastre-se</Link>
+
+      <p>
+        Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
+      </p>
     </div>
   );
 }
