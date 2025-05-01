@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [senha, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,6 +15,8 @@ export default function Login({ onLogin }) {
         email,
         senha,
       });
+      navigate("/cadastro"); // so para testar se o login funciona, depois tira isso e redireciona para a home
+      console.log(res.data);
       const token = res.data.access_token;
       localStorage.setItem("token", token);
       onLogin(token);
