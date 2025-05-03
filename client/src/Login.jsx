@@ -1,10 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import logo from "./assets/logo.png"; // ajuste o caminho se estiver diferente
+import { useNavigate, Link } from "react-router-dom";
+
 
 export default function Login({ onLogin }) {
-  const [nome, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [senha, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -12,13 +12,14 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/login", {
-        nome,
+        email,
         senha,
       });
+      navigate("/cadastro"); // so para testar se o login funciona, depois tira isso e redireciona para a home
+      console.log(res.data);
       const token = res.data.access_token;
       localStorage.setItem("token", token);
       onLogin(token);
-      navigate("/inicio");
     } catch (err) {
       alert("Login falhou");
     }
@@ -26,18 +27,14 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="login-container">
-      <img
-        src={logo}
-        alt="Logo Uniride"
-        className="logo-login"
-      />
-      <h1>Bem-vindo </h1>
+      <h1>Bem-vindo ao Uniride</h1>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={nome}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Usuário"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           required
         />
         <input
@@ -49,7 +46,10 @@ export default function Login({ onLogin }) {
         />
         <button type="submit">Entrar</button>
       </form>
-      <Link to="/cadastro">Não tem conta? Cadastre-se</Link>
+
+      <p>
+        Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
+      </p>
     </div>
   );
 }
