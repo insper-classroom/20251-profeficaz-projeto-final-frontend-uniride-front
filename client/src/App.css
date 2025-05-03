@@ -1,26 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+/* Fundo geral */
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #e63946, #f1faee);
+  background: linear-gradient(135deg, #e63946 20%, #f1faee 80%);
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.login-container {
-  background-color: white;
-  padding: 2rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+/* Caixa central do app */
+.app-wrapper {
+  background: #db2e12;
   width: 100%;
-  max-width: 400px;
+  max-width: 430px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.8s ease;
+}
+
+/* Conteúdo do app */
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 70px;
+}
+
+/* Barra inferior (homebar) */
+.homebar {
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 0;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #ccc;
+}
+
+.homebar a {
+  text-align: center;
+  color: #1d1d1d;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.homebar img.icon {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0.3);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.homebar img.icon:hover {
+  transform: scale(1.2);
+  filter: brightness(0.6);
+}
+
+/* Login */
+.login-container {
+  padding: 2rem 3rem;
   text-align: center;
 }
 
 .login-container h1 {
   margin-bottom: 1.5rem;
-  color: #1d3557;
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
 }
 
 .login-container input {
@@ -31,6 +87,13 @@ body {
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-container input:focus {
+  border-color: #e63946;
+  box-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
+  outline: none;
 }
 
 .login-container button {
@@ -42,11 +105,12 @@ body {
   width: 100%;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .login-container button:hover {
   background-color: #d62828;
+  transform: scale(1.03);
 }
 
 .login-container a {
@@ -60,3 +124,257 @@ body {
 .login-container a:hover {
   text-decoration: underline;
 }
+
+/* Página inicial */
+.inicio-container {
+  padding: 2rem;
+  text-align: center;
+  color: #1d1d1d;
+}
+
+.titulo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #1d3557;
+  font-family: 'Poppins', sans-serif;
+}
+
+.boas-vindas {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtitulo {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #444;
+}
+
+.grid-botoes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  justify-items: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.card {
+  background: #ed0f0f;
+  color: #1d1d1d;
+  padding: 1.5rem;
+  border-radius: 16px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 160px;
+  height: 100px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  background-color: #e63946;
+  color: white;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+}
+
+.icon-grande {
+  width: 65px; /* ou o tamanho que quiser */
+  height: 65px;
+}
+
+.texto-preto {
+  color: #1d1d1d !important;
+}
+
+.vermelho {
+  color: #e63946;
+}
+
+.preto {
+  color: #1d1d1d;
+}
+
+/* Botão Sair com contraste */
+.logout {
+  margin-top: 2rem;
+  background-color: #ffffff;
+  border: 2px solid #e63946;
+  color: #e63946;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s;
+}
+
+.logout:hover {
+  background-color: #e63946;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.logo-inicio {
+  width: 180px;
+  height: auto;
+  margin-bottom: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Solicitar carona */
+.solicitar-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+.imagem-fundo {
+  height: 40vh;
+  background-size: cover;
+  background-position: center;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.solicitar-container {
+  background-color: white;
+  margin-top: -50px;
+  padding: 2rem;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  position: relative;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.solicitar-container h1 {
+  color: #1d3557;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+.input-group input {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #e63946;
+  box-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
+  outline: none;
+}
+
+.input-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.input-row .input-group {
+  flex: 1;
+}
+
+.solicitar-container button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.solicitar-container button:hover {
+  background-color: #d62828;
+  transform: scale(1.03);
+}
+
+.mensagem {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: bold;
+  color: green;
+}
+
+/* Lista de avaliações */
+.lista-avaliacoes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item-avaliacao {
+  background: #f1faee;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  text-align: left;
+}
+
+.estrela {
+  color: #e63946;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+/* Logo login */
+.logo-login {
+  width: 150px;
+  height: auto;
+  margin-bottom: 1.5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Animação fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+

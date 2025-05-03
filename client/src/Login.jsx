@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "./assets/logo.png"; // ajuste o caminho se estiver diferente
 
 export default function Login({ onLogin }) {
   const [nome, setUsername] = useState("");
   const [senha, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +18,7 @@ export default function Login({ onLogin }) {
       const token = res.data.access_token;
       localStorage.setItem("token", token);
       onLogin(token);
+      navigate("/inicio");
     } catch (err) {
       alert("Login falhou");
     }
@@ -23,8 +26,12 @@ export default function Login({ onLogin }) {
 
   return (
     <div className="login-container">
-      <h1>Bem-vindo ao Uniride</h1>
-
+      <img
+        src={logo}
+        alt="Logo Uniride"
+        className="logo-login"
+      />
+      <h1>Bem-vindo </h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -42,10 +49,7 @@ export default function Login({ onLogin }) {
         />
         <button type="submit">Entrar</button>
       </form>
-
-      <p>
-        Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
-      </p>
+      <Link to="/cadastro">Não tem conta? Cadastre-se</Link>
     </div>
   );
 }
