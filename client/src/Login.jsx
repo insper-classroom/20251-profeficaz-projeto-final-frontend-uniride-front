@@ -15,7 +15,7 @@ export default function Login({ onLogin }) {
         email,
         senha,
       });
-      navigate("/cadastro"); // so para testar se o login funciona, depois tira isso e redireciona para a home
+      navigate("/inicio"); // so para testar se o login funciona, depois tira isso e redireciona para a home
       console.log(res.data);
       const token = res.data.access_token;
       localStorage.setItem("token", token);
