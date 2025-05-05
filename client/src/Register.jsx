@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "./App.css"; // Importando os estilos
+import "./App.css"; 
 
 export default function Cadastrar() {
   const [nome, setUsername] = useState("");
@@ -15,6 +15,41 @@ export default function Cadastrar() {
   const [cep, setCep] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+
+
+  const buscarCep = async (cepValue) => {
+    
+    const cepLimpo = cepValue.replace(/\D/g, '');
+    
+
+    if (cepLimpo.length !== 8) {
+      return;
+    }
+    
+    try {
+      const response = await axios.get(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+      const data = response.data;
+      
+      if (!data.erro) {
+        setRua(data.logradouro || "");
+        setBairro(data.bairro || "");
+        setCidade(data.localidade || "");
+
+      }
+    } catch (error) {
+      console.error('Erro ao buscar CEP:', error);
+    }
+  };
+
+
+  const handleCepChange = (e) => {
+    const novoCep = e.target.value;
+    setCep(novoCep);
+
+    if (novoCep.replace(/\D/g, '').length === 8) {
+      buscarCep(novoCep);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,11 +83,11 @@ export default function Cadastrar() {
         <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
         <input value={matricula} onChange={(e) => setMatricula(e.target.value)} placeholder="Matrícula" />
         <input value={senha} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" type="password" />
+        <input value={cep} onChange={handleCepChange} placeholder="CEP" />
         <input value={rua} onChange={(e) => setRua(e.target.value)} placeholder="Rua" />
         <input value={numero} onChange={(e) => setNumero(e.target.value)} placeholder="Número" />
         <input value={bairro} onChange={(e) => setBairro(e.target.value)} placeholder="Bairro" />
         <input value={cidade} onChange={(e) => setCidade(e.target.value)} placeholder="Cidade" />
-        <input value={cep} onChange={(e) => setCep(e.target.value)} placeholder="CEP" />
         <button type="submit">Cadastrar</button>
       </form>
       {msg && <p>{msg}</p>}
