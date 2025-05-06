@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import fundoAvaliacao from "./assets/avaliacoes.png";
-import Layout from "./Layout";
 import axios from "axios";
+import Layout from "./Layout"; // Layout padrão já inclui HomeBar
 
 export default function Avaliacoes() {
   const [avaliacoes, setAvaliacoes] = useState([]);
@@ -22,12 +22,12 @@ export default function Avaliacoes() {
     })
     .then(response => {
       const usuario = response.data;
-      setNotaMotorista(usuario.nota_como_motorista || 0);
-      setNotaPassageiro(usuario.nota_como_passageiro || 0);
-      if (usuario.avaliacoes_recebidas) {
+      setNotaMotorista(usuario.nota_como_motorista ?? 0);
+      setNotaPassageiro(usuario.nota_como_passageiro ?? 0);
+      if (usuario.avaliacoes_recebidas && Array.isArray(usuario.avaliacoes_recebidas)) {
         setAvaliacoes(usuario.avaliacoes_recebidas);
       } else {
-        setAvaliacoes([]); // Não tem avaliações
+        setAvaliacoes([]);
       }
     })
     .catch(error => {
@@ -39,6 +39,7 @@ export default function Avaliacoes() {
 
   return (
     <Layout>
+      {/* Aqui dentro vai só o conteúdo */}
       <div className="solicitar-wrapper">
         <div
           className="imagem-fundo"
@@ -46,17 +47,17 @@ export default function Avaliacoes() {
         ></div>
 
         <div className="solicitar-container">
-          <h1>Avaliações Recebidas</h1>
-          <p><strong>Nota como Motorista:</strong> {notaMotorista.toFixed(1)}</p>
-          <p><strong>Nota como Passageiro:</strong> {notaPassageiro.toFixed(1)}</p>
+
+          <p><strong>Nota como Motorista:</strong> {notaMotorista ? notaMotorista.toFixed(1) : "N/A"}</p>
+          <p><strong>Nota como Passageiro:</strong> {notaPassageiro ? notaPassageiro.toFixed(1) : "N/A"}</p>
 
           {avaliacoes.length > 0 ? (
             <ul className="lista-avaliacoes">
               {avaliacoes.map((avaliacao, index) => (
                 <li key={index} className="item-avaliacao">
-                  <div className="estrela">⭐ {avaliacao.nota}</div>
-                  <p>{avaliacao.comentario}</p>
-                  <p><strong>Tipo:</strong> {avaliacao.tipo}</p>
+                  <div className="estrela">⭐ {avaliacao.nota ?? "Sem nota"}</div>
+                  <p>{avaliacao.comentario || "Sem comentário"}</p>
+                  <p><strong>Tipo:</strong> {avaliacao.tipo || "Não especificado"}</p>
                 </li>
               ))}
             </ul>
