@@ -103,22 +103,27 @@ export default function SolicitarCarona() {
           <ul className="lista-avaliacoes">
             {caronas.map((carona) => (
               <li key={carona._id} className="item-avaliacao">
-                <div><strong>Motorista:</strong> {carona.motorista_id}</div>
-                <div>
-                  <strong>Origem:</strong> {carona.local_saida.rua}, {carona.local_saida.bairro}, {carona.local_saida.cidade}
+                <div className="motorista">
+                  <span 
+                    className={`status-bolinha ${carona.status === 'disponivel' ? 'status-disponivel' : 'status-cheia'}`}
+                  ></span>
+                  <strong>Motorista:</strong> {carona.motorista_id}
                 </div>
                 <div>
-                  <strong>Destino:</strong> {carona.destino.rua}, {carona.destino.bairro}, {carona.destino.cidade}
+                  <strong>🏠 Origem:</strong> {carona.local_saida.rua}, {carona.local_saida.bairro}, {carona.local_saida.cidade}
                 </div>
                 <div>
-                  <strong>Data/Hora:</strong> {new Date(carona.horario_saida).toLocaleString()}
+                  <strong>🎯 Destino:</strong>{carona.destino.rua}, {carona.destino.bairro}, {carona.destino.cidade}
                 </div>
                 <div>
-                  <strong>Vagas:</strong> {carona.vagas_disponiveis}
+                  <strong>🕒 Data/Hora:</strong> {new Date(carona.horario_saida).toLocaleString()}
+                </div>
+                <div>
+                  <strong>🚗 Vagas:</strong> {carona.vagas_disponiveis}
                 </div>
                 {carona.information && (
                   <div>
-                    <strong>Informações:</strong> {carona.information}
+                    <strong>ℹ️ Informações:</strong> {carona.information}
                   </div>
                 )}
               </li>

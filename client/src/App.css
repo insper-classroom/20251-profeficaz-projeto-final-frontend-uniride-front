@@ -379,30 +379,55 @@ body {
 
 
 /* customizacao listagem de caronas*/
-lista-avaliacoes {
+.lista-avaliacoes {
   list-style: none;
   padding: 0;
 }
 
 .item-avaliacao {
   background-color: #efebebd5;
+  border-left: 5px solid #d13434;
   border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 14px;
   color: #333;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
 }
 
 .item-avaliacao:hover {
-  transform: scale(1.02);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .item-avaliacao div {
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 
 .item-avaliacao strong {
-  color: #d13434; /* Vermelho bonito combinando com seu botão */
+  color: #d13434;
+}
+
+.status-bolinha {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.status-disponivel {
+  background-color: #28a745;
+}
+
+.status-cheia {
+  background-color: #6c757d;
+}
+
+.motorista {
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
 }
