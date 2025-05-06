@@ -69,7 +69,7 @@ export default function Cadastrar() {
       });
 
       setMsg(res.data.msg);
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       setMsg(err.response?.data?.msg || "Erro no cadastro");
     }
