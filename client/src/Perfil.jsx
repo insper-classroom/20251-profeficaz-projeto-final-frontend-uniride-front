@@ -60,7 +60,7 @@ export default function Perfil() {
         <p>Você ainda não reservou nenhuma carona.</p>
       )}
 
-      <button onClick={voltar} style={{ marginTop: "1rem" }}>Voltar</button>
+      
     </div>
   );
 }

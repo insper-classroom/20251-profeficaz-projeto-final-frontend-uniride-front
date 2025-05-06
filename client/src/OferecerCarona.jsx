@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import fundo from "./assets/fundo-caronas.png"; // importa diretamente
+import fundo from "./assets/fundo-caronas.png";
 import "./App.css";
 import axios from "axios";
 
@@ -15,40 +15,44 @@ export default function OferecerCarona() {
 
   const token = localStorage.getItem("token");
 
-  // Carregar minhas caronas cadastradas ao abrir a página
-  useEffect(() => {
+  // Buscar caronas criadas pelo motorista
+  const carregarMinhasCaronas = () => {
     if (!token) {
-      alert("Usuário não autenticado");
-      window.location.href = "/";
+      setMensagem("Você precisa estar logado.");
       return;
     }
 
-    carregarMinhasCaronas();
-  }, []);
-
-  const carregarMinhasCaronas = () => {
     axios
       .get("http://localhost:5000/caronas/minhas", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       })
-      .then((res) => {
-        setMinhasCaronas(res.data);
+      .then((response) => {
+        setMinhasCaronas(response.data);
       })
-      .catch((err) => {
-        console.error("Erro ao carregar minhas caronas:", err.response ? err.response.data : err.message);
+      .catch((error) => {
+        console.error("Erro ao buscar minhas caronas:", error.response ? error.response.data : error.message);
       });
   };
+
+  useEffect(() => {
+    if (!token) {
+      setMensagem("Você precisa estar logado para acessar esta página.");
+      return;
+    }
+    carregarMinhasCaronas();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!token) {
-      alert("Usuário não autenticado");
-      window.location.href = "/";
+      setMensagem("Usuário não autenticado");
       return;
     }
 
-    const dataCompleta = `${data}T${horario}`; // ISO format
+    const dataCompleta = `${data}T${horario}`;
+    const vagasInt = Math.max(parseInt(vagas), 0);
+
     const caronaData = {
       local_saida: {
         rua: origem,
@@ -65,7 +69,7 @@ export default function OferecerCarona() {
         cep: "00000-000"
       },
       horario_saida: dataCompleta,
-      vagas_disponiveis: Math.max(parseInt(vagas), 0),
+      vagas_disponiveis: vagasInt,
       information: observacoes
     };
 
@@ -80,13 +84,29 @@ export default function OferecerCarona() {
       setHorario("");
       setVagas("");
       setObservacoes("");
-
-      // Atualizar a lista de caronas
       carregarMinhasCaronas();
     })
     .catch((error) => {
       console.error("Erro ao criar carona:", error.response ? error.response.data : error.message);
       setMensagem("Erro ao registrar a carona. Tente novamente.");
+    });
+  };
+
+  const excluirCarona = (idCarona) => {
+    if (!token) return;
+
+    if (!window.confirm("Tem certeza que deseja excluir esta carona?")) return;
+
+    axios.delete(`http://localhost:5000/caronas/${idCarona}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(() => {
+      setMensagem("Carona excluída com sucesso!");
+      carregarMinhasCaronas();
+    })
+    .catch((error) => {
+      console.error("Erro ao excluir carona:", error.response ? error.response.data : error.message);
+      setMensagem("Erro ao excluir carona.");
     });
   };
 
@@ -168,7 +188,7 @@ export default function OferecerCarona() {
           {mensagem && <p className="mensagem">{mensagem}</p>}
         </form>
 
-        <h2>Minhas Caronas Cadastradas</h2>
+        <h2>Minhas Caronas</h2>
         {minhasCaronas.length > 0 ? (
           <ul className="lista-avaliacoes">
             {minhasCaronas.map((carona) => (
@@ -176,13 +196,29 @@ export default function OferecerCarona() {
                 <div><strong>🏠 Origem:</strong> {carona.local_saida.rua}</div>
                 <div><strong>🎯 Destino:</strong> {carona.destino.rua}</div>
                 <div><strong>🕒 Data/Hora:</strong> {new Date(carona.horario_saida).toLocaleString()}</div>
-                <div><strong>🚗 Vagas:</strong> {carona.vagas_disponiveis}</div>
-                <div><strong>Observações:</strong> {carona.information || "Nenhuma"}</div>
+                <div><strong>🚗 Vagas disponíveis:</strong> {Math.max(carona.vagas_disponiveis, 0)}</div>
+                {carona.information && (
+                  <div><strong>ℹ️ Informações:</strong> {carona.information}</div>
+                )}
+                <button
+                  onClick={() => excluirCarona(carona._id)}
+                  style={{
+                    marginTop: "10px",
+                    backgroundColor: "#e63946",
+                    color: "white",
+                    border: "none",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "8px",
+                    cursor: "pointer"
+                  }}
+                >
+                  Excluir
+                </button>
               </li>
             ))}
           </ul>
         ) : (
-          <p>Você ainda não cadastrou nenhuma carona.</p>
+          <p>Você ainda não criou caronas.</p>
         )}
       </div>
     </div>
