@@ -42,7 +42,7 @@ export default function Perfil() {
       <p><strong>Endereço:</strong> {usuario.endereco?.rua}, {usuario.endereco?.numero}</p>
       <p><strong>Nota como Motorista:</strong> {usuario.nota_como_motorista?.toFixed(1)}</p>
       <p><strong>Nota como Passageiro:</strong> {usuario.nota_como_passageiro?.toFixed(1)}</p>
-      <button onClick={voltar}>Voltar</button>
+      
     </div>
   );
 }
