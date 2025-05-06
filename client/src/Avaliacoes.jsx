@@ -6,6 +6,8 @@ import axios from "axios";
 
 export default function Avaliacoes() {
   const [avaliacoes, setAvaliacoes] = useState([]);
+  const [notaMotorista, setNotaMotorista] = useState(0);
+  const [notaPassageiro, setNotaPassageiro] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,6 +22,8 @@ export default function Avaliacoes() {
     })
     .then(response => {
       const usuario = response.data;
+      setNotaMotorista(usuario.nota_como_motorista || 0);
+      setNotaPassageiro(usuario.nota_como_passageiro || 0);
       if (usuario.avaliacoes_recebidas) {
         setAvaliacoes(usuario.avaliacoes_recebidas);
       } else {
@@ -43,6 +47,9 @@ export default function Avaliacoes() {
 
         <div className="solicitar-container">
           <h1>Avaliações Recebidas</h1>
+          <p><strong>Nota como Motorista:</strong> {notaMotorista.toFixed(1)}</p>
+          <p><strong>Nota como Passageiro:</strong> {notaPassageiro.toFixed(1)}</p>
+
           {avaliacoes.length > 0 ? (
             <ul className="lista-avaliacoes">
               {avaliacoes.map((avaliacao, index) => (
