@@ -378,3 +378,31 @@ body {
 }
 
 
+/* customizacao listagem de caronas*/
+lista-avaliacoes {
+  list-style: none;
+  padding: 0;
+}
+
+.item-avaliacao {
+  background-color: #efebebd5;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  color: #333;
+  transition: transform 0.2s;
+}
+
+.item-avaliacao:hover {
+  transform: scale(1.02);
+}
+
+.item-avaliacao div {
+  margin-bottom: 5px;
+}
+
+.item-avaliacao strong {
+  color: #d13434; /* Vermelho bonito combinando com seu botão */
+}
