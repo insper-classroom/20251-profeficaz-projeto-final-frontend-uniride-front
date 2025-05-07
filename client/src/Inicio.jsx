@@ -1,6 +1,7 @@
-// src/Inicio.jsx
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./App.css";
+import axios from "axios";
 
 // IMPORTANDO AS IMAGENS
 import logo from "./assets/logo.png";
@@ -11,6 +12,26 @@ import avaliacoesIcon from "./assets/avaliacoes1.png";
 
 export default function Inicio() {
   const navigate = useNavigate();
+  const [nomeUsuario, setNomeUsuario] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/");
+      return;
+    }
+
+    axios.get("http://localhost:5000/perfil", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      setNomeUsuario(response.data.nome);
+    })
+    .catch(error => {
+      console.error("Erro ao buscar perfil:", error);
+      navigate("/");
+    });
+  }, []);
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -25,7 +46,7 @@ export default function Inicio() {
             <img src={logo} alt="Logo Uniride" className="logo-inicio" />
           </div>
 
-          <h2 className="boas-vindas">Bem-vindo, João!</h2>
+          <h2 className="boas-vindas">Bem-vindo{nomeUsuario ? `, ${nomeUsuario}` : ""}!</h2>
           <p className="subtitulo">Encontre ou ofereça caronas com segurança</p>
 
           <div className="grid-botoes">

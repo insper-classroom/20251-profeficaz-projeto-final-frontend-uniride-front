@@ -110,6 +110,23 @@ export default function OferecerCarona() {
     });
   };
 
+  // FUNÇÃO PARA FINALIZAR CARONA
+  const finalizarCarona = (idCarona) => {
+    if (!token) return;
+
+    axios.post(`http://localhost:5000/caronas/${idCarona}/finalizar`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(() => {
+      setMensagem("Carona finalizada com sucesso!");
+      carregarMinhasCaronas(); // Atualiza a lista sem sair da página
+    })
+    .catch((error) => {
+      console.error("Erro ao finalizar carona:", error.response ? error.response.data : error.message);
+      setMensagem("Erro ao finalizar carona.");
+    });
+  };
+
   return (
     <div className="solicitar-wrapper">
       <div
@@ -200,20 +217,41 @@ export default function OferecerCarona() {
                 {carona.information && (
                   <div><strong>ℹ️ Informações:</strong> {carona.information}</div>
                 )}
-                <button
-                  onClick={() => excluirCarona(carona._id)}
-                  style={{
-                    marginTop: "10px",
-                    backgroundColor: "#e63946",
-                    color: "white",
-                    border: "none",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "8px",
-                    cursor: "pointer"
-                  }}
-                >
-                  Excluir
-                </button>
+
+                {carona.status !== 'completa' ? (
+                  <>
+                    <button
+                      onClick={() => finalizarCarona(carona._id)}
+                      style={{
+                        marginTop: "10px",
+                        backgroundColor: "green",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "8px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Finalizar Carona
+                    </button>
+                    <button
+                      onClick={() => excluirCarona(carona._id)}
+                      style={{
+                        marginTop: "10px",
+                        backgroundColor: "#e63946",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "8px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Excluir
+                    </button>
+                  </>
+                ) : (
+                  <p style={{ color: "green", fontWeight: "bold" }}>✅ Carona finalizada</p>
+                )}
               </li>
             ))}
           </ul>
