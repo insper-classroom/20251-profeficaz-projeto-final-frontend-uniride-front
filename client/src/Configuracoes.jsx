@@ -3,57 +3,148 @@ import axios from "axios";
 import Layout from "./Layout";
 
 export default function Configuracoes() {
-    const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState(null);
+  const [editando, setEditando] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: "",
+    email: "",
+    matricula: "",
+    endereco: {
+      rua: "",
+      numero: "",
+      bairro: "",
+      cidade: "",
+      cep: ""
+    }
+  });
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            alert("Usuário não autenticado");
-            window.location.href = "/";
-            return;
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!token) {
+      alert("Usuário não autenticado");
+      window.location.href = "/";
+      return;
+    }
+
+    axios.get("http://localhost:5000/perfil", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      setUsuario(response.data);
+      setFormData({
+        nome: response.data.nome || "",
+        email: response.data.email || "",
+        matricula: response.data.matricula || "",
+        endereco: {
+          rua: response.data.endereco?.rua || "",
+          numero: response.data.endereco?.numero || "",
+          bairro: response.data.endereco?.bairro || "",
+          cidade: response.data.endereco?.cidade || "",
+          cep: response.data.endereco?.cep || ""
         }
+      });
+    })
+    .catch(error => {
+      console.error("Erro ao buscar dados do usuário:", error);
+    });
+  }, []);
 
-        axios.get("http://localhost:5000/perfil", {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-        .then(response => {
-            setUsuario(response.data);
-        })
-        .catch(error => {
-            console.error("Erro ao buscar perfil:", error);
-            alert("Erro ao buscar perfil. Faça login novamente.");
-            window.location.href = "/";
-        });
-    }, []);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-    if (!usuario) return <Layout><p>Carregando...</p></Layout>;
+    if (name.startsWith("endereco.")) {
+      const campo = name.split(".")[1];
+      setFormData(prev => ({
+        ...prev,
+        endereco: { ...prev.endereco, [campo]: value }
+      }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
 
-    return (
-        <Layout>
-            <div className="login-container">
-                <h1>Meu Perfil</h1>
-                <p><strong>Nome:</strong> {usuario.nome}</p>
-                <p><strong>Email:</strong> {usuario.email}</p>
-                <p><strong>Matrícula:</strong> {usuario.matricula}</p>
-                <h2>Avaliações</h2>
-                <p>Nota como Motorista: {usuario.nota_como_motorista || "N/A"}</p>
-                <p>Nota como Passageiro: {usuario.nota_como_passageiro || "N/A"}</p>
+  const handleSalvar = () => {
+    axios.put("http://localhost:5000/perfil", formData, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(() => {
+      alert("Informações atualizadas com sucesso!");
+      setEditando(false);
+      // Recarregar as informações do usuário
+      return axios.get("http://localhost:5000/perfil", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+    })
+    .then(response => {
+      setUsuario(response.data);
+    })
+    .catch(error => {
+      console.error("Erro ao atualizar perfil:", error.response?.data || error.message);
+      alert("Erro ao atualizar informações.");
+    });
+  };
 
-                <h3>Avaliações Recebidas</h3>
-                {usuario.avaliacoes_recebidas && usuario.avaliacoes_recebidas.length > 0 ? (
-                    <ul className="lista-avaliacoes">
-                        {usuario.avaliacoes_recebidas.map((av, index) => (
-                            <li key={index} className="item-avaliacao">
-                                <span className="estrela">⭐ {av.nota}</span> <br />
-                                Tipo: {av.tipo} <br />
-                                Comentário: {av.comentario}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>Sem avaliações ainda.</p>
-                )}
-            </div>
-        </Layout>
-    );
+  if (!usuario) return <Layout><p>Carregando dados...</p></Layout>;
+
+  return (
+    <Layout>
+      <div className="inicio-container">
+        <h1>Configurações</h1>
+
+        <div className="input-group">
+          <label>Nome:</label>
+          <input 
+            type="text" 
+            name="nome" 
+            value={formData.nome} 
+            onChange={handleChange} 
+            disabled={!editando} 
+          />
+        </div>
+
+        <div className="input-group">
+          <label>Email:</label>
+          <input 
+            type="email" 
+            name="email" 
+            value={formData.email} 
+            onChange={handleChange} 
+            disabled={!editando} 
+          />
+        </div>
+
+        <div className="input-group">
+          <label>Matrícula:</label>
+          <input 
+            type="text" 
+            name="matricula" 
+            value={formData.matricula} 
+            onChange={handleChange} 
+            disabled={!editando} 
+          />
+        </div>
+
+        <h2>Endereço</h2>
+        {["rua", "numero", "bairro", "cidade", "cep"].map((campo) => (
+          <div className="input-group" key={campo}>
+            <label>{campo[0].toUpperCase() + campo.slice(1)}:</label>
+            <input 
+              type="text" 
+              name={`endereco.${campo}`} 
+              value={formData.endereco[campo]} 
+              onChange={handleChange} 
+              disabled={!editando} 
+            />
+          </div>
+        ))}
+
+        {!editando ? (
+          <button onClick={() => setEditando(true)}>Editar</button>
+        ) : (
+          <button onClick={handleSalvar}>Salvar</button>
+        )}
+      </div>
+    </Layout>
+  );
 }
