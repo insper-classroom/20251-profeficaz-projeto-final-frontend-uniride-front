@@ -14,8 +14,8 @@ export default function EstrelasAvaliacao({ caronaId, tipo, passageiroId }) {
     }
 
     const url = tipo === "motorista"
-      ? `http://localhost:5000/caronas/${caronaId}/avaliar_motorista`
-      : `http://localhost:5000/caronas/${caronaId}/avaliar_passageiro`;
+      ? `http://127.0.0.1:5000/caronas/${caronaId}/avaliar_motorista`
+      : `http://127.0.0.1:5000/caronas/${caronaId}/avaliar_passageiro`;
 
     const body = tipo === "motorista"
       ? { nota: notaSelecionada, comentario: comentario }

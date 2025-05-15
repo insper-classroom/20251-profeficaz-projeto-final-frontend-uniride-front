@@ -23,7 +23,7 @@ export default function OferecerCarona() {
     }
 
     axios
-      .get("http://localhost:5000/caronas/minhas", {
+      .get("http://127.0.0.1:5000/caronas/minhas", {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then((response) => {
@@ -73,7 +73,7 @@ export default function OferecerCarona() {
       information: observacoes
     };
 
-    axios.post("http://localhost:5000/caronas", caronaData, {
+    axios.post("http://127.0.0.1:5000/caronas", caronaData, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(() => {
@@ -97,7 +97,7 @@ export default function OferecerCarona() {
 
     if (!window.confirm("Tem certeza que deseja excluir esta carona?")) return;
 
-    axios.delete(`http://localhost:5000/caronas/${idCarona}`, {
+    axios.delete(`http://127.0.0.1:5000/caronas/${idCarona}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(() => {
@@ -114,7 +114,7 @@ export default function OferecerCarona() {
   const finalizarCarona = (idCarona) => {
     if (!token) return;
 
-    axios.post(`http://localhost:5000/caronas/${idCarona}/finalizar`, {}, {
+    axios.post(`http://127.0.0.1:5000/caronas/${idCarona}/finalizar`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(() => {

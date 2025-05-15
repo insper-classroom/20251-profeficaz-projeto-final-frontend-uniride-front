@@ -22,7 +22,7 @@ export default function AvaliarCarona() {
       return;
     }
 
-    axios.get(`http://localhost:5000/caronas/${id}`, {
+    axios.get(`http://127.0.0.1:5000/caronas/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setCarona(res.data))
@@ -57,9 +57,11 @@ export default function AvaliarCarona() {
     if (!token) return;
 
     // Avaliar o motorista
-    axios.post(`http://localhost:5000/caronas/${id}/avaliar_motorista`, {
+    axios.post(`http://127.0.0.1:5000/caronas/${id}/avaliar_motorista`, {
       nota: parseFloat(notaMotorista),
-      comentario: comentarioMotorista
+      comentario: comentarioMotorista,
+      avaliador_id: carona.passageiros_ids[0],
+      avaliado_id: carona.motorista_id
     }, {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -67,10 +69,12 @@ export default function AvaliarCarona() {
       // Agora avaliar cada passageiro (um por um)
       const avaliacoesPromises = carona.passageiros_ids.map(pid => {
         const avaliacao = avaliacoesPassageiros[pid] || {};
-        return axios.post(`http://localhost:5000/caronas/${id}/avaliar_passageiro`, {
+        return axios.post(`http://127.0.0.1:5000/caronas/${id}/avaliar_passageiro`, {
           passageiro_id: pid,
           nota: parseFloat(avaliacao.nota || 0),
-          comentario: avaliacao.comentario || ""
+          comentario: avaliacao.comentario || "",
+          avaliador_id: carona.motorista_id,
+          avaliado_id: pid
         }, {
           headers: { Authorization: `Bearer ${token}` }
         });

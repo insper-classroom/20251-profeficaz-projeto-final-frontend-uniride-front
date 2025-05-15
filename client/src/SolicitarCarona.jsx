@@ -23,7 +23,7 @@ export default function SolicitarCarona() {
 
     // Buscar o perfil para saber quem é o usuário logado
     axios
-      .get("http://localhost:5000/perfil", {
+      .get("http://127.0.0.1:5000/perfil", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -39,7 +39,7 @@ export default function SolicitarCarona() {
   const carregarCaronas = () => {
     const token = localStorage.getItem("token");
     axios
-      .get("http://localhost:5000/caronas", {
+      .get("http://127.0.0.1:5000/caronas", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -59,7 +59,7 @@ export default function SolicitarCarona() {
   const reservarCarona = (idCarona) => {
     const token = localStorage.getItem("token");
 
-    axios.put(`http://localhost:5000/caronas/${idCarona}`, {}, {
+    axios.put(`http://127.0.0.1:5000/caronas/${idCarona}`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(() => {
@@ -135,7 +135,7 @@ export default function SolicitarCarona() {
         {caronas.length > 0 ? (
           <ul className="lista-avaliacoes">
             {caronas.map((carona) => {
-              const jaReservado = carona.passageiros && carona.passageiros.includes(usuarioId);
+              const jaReservado = carona.passageiros_ids && carona.passageiros_ids.includes(usuarioId);
 
               return (
                 <li key={carona._id} className="item-avaliacao">

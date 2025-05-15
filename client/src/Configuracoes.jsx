@@ -27,7 +27,7 @@ export default function Configuracoes() {
       return;
     }
 
-    axios.get("http://localhost:5000/perfil", {
+    axios.get("http://127.0.0.1:5000/perfil", {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
@@ -65,14 +65,14 @@ export default function Configuracoes() {
   };
 
   const handleSalvar = () => {
-    axios.put("http://localhost:5000/perfil", formData, {
+    axios.put("http://127.0.0.1:5000/perfil", formData, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(() => {
       alert("Informações atualizadas com sucesso!");
       setEditando(false);
       // Recarregar as informações do usuário
-      return axios.get("http://localhost:5000/perfil", {
+      return axios.get("http://127.0.0.1:5000/perfil", {
         headers: { Authorization: `Bearer ${token}` }
       });
     })

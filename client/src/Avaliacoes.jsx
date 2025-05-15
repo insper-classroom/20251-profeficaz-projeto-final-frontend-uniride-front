@@ -16,7 +16,7 @@ export default function Avaliacoes() {
       return;
     }
 
-    axios.get("http://localhost:5000/perfil", {
+    axios.get("http://127.0.0.1:5000/perfil", {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {

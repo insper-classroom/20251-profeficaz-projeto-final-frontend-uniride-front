@@ -20,7 +20,7 @@ export default function Perfil() {
 
     // Buscar perfil
     axios
-      .get("http://localhost:5000/perfil", {
+      .get("http://127.0.0.1:5000/perfil", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +34,7 @@ export default function Perfil() {
 
     // Buscar minhas caronas oferecidas (para avaliar passageiros depois)
     axios
-      .get("http://localhost:5000/caronas/minhas", {
+      .get("http://127.0.0.1:5000/caronas/minhas", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setMinhasCaronasOferecidas(res.data))
